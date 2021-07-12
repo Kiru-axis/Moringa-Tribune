@@ -1,23 +1,31 @@
 {%extends 'all-news/base.html'%}
 {% block content %} 
 {{ block.super}}
+{% load static %}
 {% load bootstrap3 %}
-
+<style>
+  .block{
+    display:flex;
+    justify-content:space-between;
+  }
+</style>
 <div class="container">
 
   <!-- Looping through news   -->
   {% for news_item in news %}
 
-  <div class="row">
-    <!-- displaying News articles -->
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-      <h2 class="text-center"> {{ news_item.title }} </h2>
-    </div>
-      <!--Display news Article images  -->
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <img src="{{news_item.article_image.url}}" class="img-responsive" alt="Image">
+  <div class="container block mt-3">
+    <div class="card" style="width:400px">
+      <img src="{{news_item.article_image.url}}" class="img-responsive" width="200" alt="Image">
+        <div class="card-body">
+          <div class="">
+            <h2 class=""> {{ news_item.title }} </h2>
+          </div>
+          <br>
+        </div>
       </div>
-  </div>
+      </div>
+      
 
   {% empty %}
   <div class="row">
@@ -30,13 +38,14 @@
   <form  action="{%url 'newsToday'%}" method="post">
     {%csrf_token%}
 
-    {% for field in form %}
-    {% bootstrap_field field %}
-  {% endfor %}
+    {% bootstrap_form letterForm layout='inline' %}
     <input type="submit" value="Subscribe">
-    <button class="btn btn-outline-primary"></button>
   </form>
 
 </div>
 
+{% endblock content %}
+<!--End of the block content-->
+{% block scripts %} {{block.super}}
+  <script type="text/javascript" src="{%static 'js/newsletter.js'%}"></script>
 {% endblock %}

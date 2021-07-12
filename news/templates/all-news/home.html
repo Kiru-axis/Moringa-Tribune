@@ -1,0 +1,19 @@
+{%extends 'all-news/base.html'%}
+{% block content %}
+{{block.super}}
+<div class="container mt-3">
+  <div class="card" style="width:400px">
+    <img src="{{news_item.article_image.url}}" class="img-responsive " alt="Image">
+      <div class="card-body">
+        <div class="">
+          <h2 class="text-center"> {{ news_item.title }} </h2>
+        </div>
+        <br>
+        <p class="card-text">Some example text.</p>
+        <a href="#" class="btn btn-primary">See Profile</a>
+        <p class="text-muted">10:45 PM 21 April 2021</p>
+      </div>
+    </div>
+    
+
+{% endblock %}
