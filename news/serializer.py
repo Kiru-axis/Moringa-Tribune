@@ -5,4 +5,4 @@ from .models import MoringaMerch
 class MerchSerializer(serializers.ModelSerializer):
     class Meta:#meta subsclass to show the only fields that we want to show.
         model = MoringaMerch
-        fields = ('name', 'description', 'price')
+        fields = ('id','name', 'description', 'price') #id allows creation of auto incrementing objects
