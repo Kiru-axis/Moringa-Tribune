@@ -19,6 +19,38 @@ from rest_framework import status
 # permissions
 from .permissions import IsAdminOrReadOnly
 
+        
+# getting single items
+class MerchDescription(APIView):
+    permission_classes = (IsAdminOrReadOnly,)
+    def get_merch(self, pk):
+        try:
+            return MoringaMerch.objects.get(pk=pk)
+        except MoringaMerch.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, format=None):
+        merch = self.get_merch(pk)
+        serializers = MerchSerializer(merch)
+        return Response(serializers.data)
+    
+    # method for updating a single object
+    def put(self, request, pk, format=None):
+        merch = self.get_merch(pk)
+        serializers = MerchSerializer(merch, request.data)
+        if serializers.is_valid():
+            serializers.save()
+            return Response(serializers.data)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # deleting an object
+    def delete(self, request, pk, format=None):
+        merch = self.get_merch(pk)
+        merch.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # We import Response to handle the response for the API requests and the the APIView as a base class for our API view function.
 # restful api
 class MerchList(APIView):
@@ -34,20 +66,7 @@ class MerchList(APIView):
             serializers.save()
             return Response(serializers.data, status=status.HTTP_201_CREATED)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-# getting single items
-class MerchDescription(APIView):
-    permission_classes = (IsAdminOrReadOnly,)
-    def get_merch(self, pk):
-        try:
-            return MoringaMerch.objects.get(pk=pk)
-        except MoringaMerch.DoesNotExist:
-            return Http404
 
-    def get(self, request, pk, format=None):
-        merch = self.get_merch(pk)
-        serializers = MerchSerializer(merch)
-        return Response(serializers.data)
 
 def news_today(request):
     # reassigining news_today function to handle forms only
